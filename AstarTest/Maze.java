@@ -1,7 +1,9 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
+import java.util.Set;*/
+import java.util.*;
+import java.io.*;
 
 public class Maze {
 
@@ -23,17 +25,40 @@ public class Maze {
 	private List<Square> opened = new ArrayList<Square>();
 	private List<Square> closed = new ArrayList<Square>();
 	private List<Square> bestList = new ArrayList<Square>();
+	
+	
+	int[][] floorValues;
+	int start1, start2;
+	int end1, end2;
+	int floor;
+	Scanner scan;
 
 	public Maze(int rows, int columns) {
-
+		scan = new Scanner(System.in);
 		this.rows = rows;
 		this.columns = columns;
 		elements = new Square[rows][columns];
+		
+		try{
+			System.out.print("Enter a floor (0,1,2,3): ");
+			floor = scan.nextInt();
+		
+			System.out.print("Enter a start point (row col): ");
+			start2 = scan.nextInt(); start1 = scan.nextInt();
+		
+			System.out.print("Enter a goal point (row col): ");
+			end2 = scan.nextInt(); end1 = scan.nextInt();
+		}catch(Exception e){
+			System.err.println("I/O Error");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		init();
 	}
 
 	private void init() {
-
+		floorValues = MapAstarTest.generateGrid(floor);
 		createSquares();
 		setStartAndGoal();
 		generateAdjacenies();
@@ -51,14 +76,14 @@ public class Maze {
 
 	private void setStartAndGoal() {
 
-		elements[0][0].setStart(true);
+		elements[start1][start2].setStart(true);
 		Random random = new Random();
-		int goalX = 0, goalY = 0;
+		/*int goalX = 0, goalY = 0;
 		while (goalX == 0 && goalY == 0) {
 			goalX = random.nextInt(rows);
 			goalY = random.nextInt(columns);
-		}
-		goal = elements[goalX][goalY];
+		}*/
+		goal = elements[end1][end2];
 		goal.setEnd(true);
 	}
 
@@ -66,7 +91,7 @@ public class Maze {
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				elements[i][j].calculateAdjacencies();
+				elements[i][j].calculateAdjacencies(floorValues);
 			}
 		}
 	}
@@ -143,6 +168,9 @@ public class Maze {
 				if (square.isEnd()) {
 					System.out.print(OPEN_LEFT_GOAL);
 					return;
+				}else if (square.isStart()){
+					System.out.print(OPEN_LEFT_START);
+					return;
 				}
 				if (bestList.contains(square)) {
 					System.out.print(OPEN_LEFT_PATH);
@@ -197,9 +225,9 @@ public class Maze {
 	public void findBestPath() {
 
 		System.out.println("Calculating best path...");
-		Set<Square> adjacencies = elements[0][0].getAdjacencies();
+		Set<Square> adjacencies = elements[start1][start2].getAdjacencies();
 		for (Square adjacency : adjacencies) {
-			adjacency.setParent(elements[0][0]);
+			adjacency.setParent(elements[start1][start2]);
 			if (adjacency.isStart() == false) {
 				opened.add(adjacency);
 			}

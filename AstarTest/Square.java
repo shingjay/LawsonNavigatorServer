@@ -85,22 +85,26 @@ public class Square {
 		this.parent = parent;
 	}
 
-	public void calculateAdjacencies() {
+	public void calculateAdjacencies(int[][] floorValues) {
 
 		int top = x - 1;
 		int bottom = x + 1;
 		int left = y - 1;
 		int right = y + 1;
 
+
+		//System.out.println("bottom: " + bottom + "\nmaze.getRows(): " + maze.getRows());
+		
+		
 		if (bottom < maze.getRows()) {
-			if (isAdjacent()) {
+			if (floorValues[bottom][y] == 0 || floorValues[bottom][y] == 5) {
 				maze.getSquare(bottom, y).addAdjacency(this);
 				this.addAdjacency(maze.getSquare(bottom, y));
 			}
 		}
 
 		if (right < maze.getColumns()) {
-			if (isAdjacent()) {
+			if (floorValues[x][right] == 0 || floorValues[x][right] == 5) {
 				maze.getSquare(x, right).addAdjacency(this);
 				this.addAdjacency(maze.getSquare(x, right));
 			}

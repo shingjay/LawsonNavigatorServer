@@ -5,7 +5,7 @@ public class RunMaze {
 	 */
 	public static void main(String[] args) {
 
-		Maze maze = new Maze(10, 10);
+		Maze maze = new Maze(61, 27);
 		maze.draw();
 		maze.findBestPath();
 	}
