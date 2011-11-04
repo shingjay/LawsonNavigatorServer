@@ -52,7 +52,7 @@ public class Server {
 				System.exit(1);
 			}
 	        	
-	        	System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude() + "\roomNumber: " + ui.getRoomNumber() + "\nonAcademicRoom: " + ui.getNonAcademicRoom() + "\professorName: " + ui.getProfessorName());
+	        	System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "Latitude: " + ui.getLatitude() + "Longitude: " + ui.getLongitude() + "RoomNumber: " + ui.getRoomNumber() + "NonAcademicRoom: " + ui.getNonAcademicRoom() + "ProfessorName: " + ui.getProfessorName());
 	        	/*ui.setTransport(Transport.ELEVATOR);
 	        	ui.setFloor(Floor.SECOND);
 	        	ui.setLatitude(100);
