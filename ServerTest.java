@@ -1,3 +1,12 @@
+/*
+ServerTest.java
+Written by George Brinzea
+
+Used for testing and understanding server-side Java networking code
+
+This code is not a part of the final project build
+*/
+
 import java.net.*;
 import java.io.*;
 import javax.imageio.ImageIO;

@@ -1,3 +1,13 @@
+/*
+ClientTest.java
+Written by George Brinzea
+
+Used for testing and understanding client-side Java networking code
+
+This code is not a part of the final project build
+*/
+
+
 import java.io.*;
 import java.net.*;
 import javax.imageio.ImageIO;
@@ -14,7 +24,9 @@ public class ClientTest {
         BufferedReader in = null;
 	ObjectInputStream ois = null;
 	ObjectOutputStream oos = null;
-		
+	
+	
+	//The IP address of moore01	
 	byte[] IP = new byte[4];
 	IP[0] = (byte) 128;
 	IP[1] = (byte) 10;
