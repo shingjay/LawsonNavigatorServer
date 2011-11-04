@@ -1,108 +1,109 @@
+/*
+Server.java
+Written by George Brinzea
+
+Handles connections from the phone client and 
+sends information for direction calculations
+*/
+
+
 import java.net.*;
 import java.io.*;
-
+//import javax.imageio.ImageIO;
+//import java.awt.Image;
+//import java.awt.image.BufferedImage;
+//import javax.swing.ImageIcon;
+//import java.awt.Graphics2D;
 
 public class Server {
 	
+	static int PORT = 4444;
+	
 	static Socket clientSocket = null;
-	//static boolean creatingNewThread = false;
-	
-	//static Object synch = new Object();
-	
-	static int threadID = 0;
 	
 	static class Connection extends Thread{
 		public void run(){
-			int ID = threadID;
 			Socket threadedSocket = clientSocket;
+			
 			PrintWriter out = null;
+			ObjectOutputStream oos = null;
+			ObjectInputStream ois = null;
+			BufferedReader in = null;
 			try {
 				out = new PrintWriter(threadedSocket.getOutputStream(), true);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        BufferedReader in = null;
-			try {
 				in = new BufferedReader(new InputStreamReader(threadedSocket.getInputStream()));
+				oos = new ObjectOutputStream(threadedSocket.getOutputStream());
+				ois = new ObjectInputStream(threadedSocket.getInputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("I/O stream creation error.");
 				e.printStackTrace();
+				System.exit(1);
 			}
-	        String inputLine = null, outputLine = null;
+	        	
+	        	UserInput ui = null;
+	        	
+	        	//Takes in the UserInput class from the client
+	        	try{
+	        		ui = (UserInput) ois.readObject();
+	        		System.out.println("Recieved object.");
+	        	}catch(Exception e){
+	        		System.err.println("Object input error.");
+	        		e.printStackTrace();
+				System.exit(1);
+			}
+	        	
+	        	/*System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude());
+	        	ui.setTransport(Transport.ELEVATOR);
+	        	ui.setFloor(Floor.SECOND);
+	        	ui.setLatitude(100);
+	        	ui.setLongitude(200);
+	        	
+	        	try{
+	        		oos.writeObject(ui);
+	        	}catch(Exception e){
+				System.exit(1);
+			}*/
 			
-	        //synchronized(synch){
-	        	//creatingNewThread = false;
-	        //}
+			//Process an image based on the user input//
+				
+			//Send back data to the client//
 	        
-			while(true){
-	        	try {
-					inputLine = in.readLine();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	        	System.out.println("Input from connection " + ID + ": " + inputLine);
-	        	
-	        	if(inputLine.equals("exit")){
-	        		break;
-	        	}else if(inputLine.equals("getID")){
-	        		outputLine = Integer.toString(ID);
-	        	}else{
-	        		outputLine = inputLine + " lol";
-	        	}
-	        	
-	        	out.println(outputLine);
-	        	
-        		System.out.println("Output to connection " + ID + ": " + outputLine);
-        		System.out.println();
-	        }
+	        
 			
-			out.close();
-		    try {
+			try {
+				out.close();
 				in.close();
-			}catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		    try {
+				oos.close();
+				ois.close();
 				clientSocket.close();
 			}catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+				System.exit(1);
+			}	
 		}
 	}
 	
 	public static void main(String[] args) throws IOException {
 		ServerSocket serverSocket = null;
-        try {
-            serverSocket = new ServerSocket(4444);
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: 4444.");
-            System.exit(1);
-        }
+        	try {
+            		serverSocket = new ServerSocket(PORT);
+        	} catch (IOException e) {
+           		System.err.println("Could not listen on port: " + PORT + ".");
+           		System.exit(1);
+       		}
         
-        try {
-        	Connection connection;
-        	while(true){
-        		clientSocket = serverSocket.accept();
-        		connection = new Connection();
-        		connection.start();
-        		//synchronized(synch){
-    	        	//creatingNewThread = true;
-        		//}
-        		
-        		//while(creatingNewThread){
-        			//waiting
-        		//}
-        		
-        		threadID++;
-            	System.out.println("Made a new connetion");
+        	Connection connection = null;
+        	try {
+        		while(true){
+        			clientSocket = serverSocket.accept();
+        			connection = new Connection();
+        			connection.start();
+				
+            			System.out.println("Made a new connetion.");
+        		}
+        	} catch (IOException e) {
+           		System.err.println("Connection accept failed.");
+            		System.exit(1);
         	}
-        } catch (IOException e) {
-            System.err.println("Accept failed.");
-            System.exit(1);
-        }
 	}
 }
