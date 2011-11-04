@@ -52,8 +52,8 @@ public class Server {
 				System.exit(1);
 			}
 	        	
-	        	/*System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude());
-	        	ui.setTransport(Transport.ELEVATOR);
+	        	System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude() + "\roomNumber: " + ui.getRoomNumber() + "\nonAcademicRoom: " + ui.getNonAcademicRoom() + "\professorName: " + ui.getProfessorName());
+	        	/*ui.setTransport(Transport.ELEVATOR);
 	        	ui.setFloor(Floor.SECOND);
 	        	ui.setLatitude(100);
 	        	ui.setLongitude(200);
@@ -68,7 +68,7 @@ public class Server {
 				
 			//Send back data to the client//
 	        
-	        
+	        	//out.println("The data has been recieved");
 			
 			try {
 				out.close();
