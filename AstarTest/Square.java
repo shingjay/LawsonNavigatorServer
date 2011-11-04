@@ -97,14 +97,14 @@ public class Square {
 		
 		
 		if (bottom < maze.getRows()) {
-			if (floorValues[bottom][y] == 0 || floorValues[bottom][y] == 5) {
+			if ((floorValues[bottom][y] == 0 || floorValues[bottom][y] == 5) && (floorValues[x][y] == 0 || floorValues[x][y] == 5)) {
 				maze.getSquare(bottom, y).addAdjacency(this);
 				this.addAdjacency(maze.getSquare(bottom, y));
 			}
 		}
 
 		if (right < maze.getColumns()) {
-			if (floorValues[x][right] == 0 || floorValues[x][right] == 5) {
+			if ((floorValues[x][right] == 0 || floorValues[x][right] == 5) && (floorValues[x][y] == 0 || floorValues[x][y] == 5)) {
 				maze.getSquare(x, right).addAdjacency(this);
 				this.addAdjacency(maze.getSquare(x, right));
 			}
