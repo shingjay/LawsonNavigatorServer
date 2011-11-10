@@ -6,7 +6,7 @@ Handles connections from the phone client and
 sends information for direction calculations
 */
 
-
+package com.purdue.LawsonNavigator;
 import java.net.*;
 import java.io.*;
 //import javax.imageio.ImageIO;

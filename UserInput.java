@@ -1,7 +1,7 @@
 /**
  * 
  */
-//package com.purdue.LawsonNavigator;
+package com.purdue.LawsonNavigator;
 import java.io.Serializable;
 /**
  * @author ong0
