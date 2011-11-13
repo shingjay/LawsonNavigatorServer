@@ -1,7 +1,3 @@
-/*import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;*/
 import java.util.*;
 import java.io.*;
 
@@ -55,6 +51,35 @@ public class Maze {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		init();
+	}
+	
+	public Maze(int rows, int columns, int start1, int start2, int end1, int end2) {
+		scan = new Scanner(System.in);
+		this.rows = rows;
+		this.columns = columns;
+		elements = new Square[rows][columns];
+		
+		try{
+			System.out.print("Enter a floor (0,1,2,3): ");
+			floor = scan.nextInt();
+		
+			System.out.print("Enter a start point (row col): ");
+			start1 = scan.nextInt(); start2 = scan.nextInt();
+		
+			System.out.print("Enter a goal point (row col): ");
+			end1 = scan.nextInt(); end2 = scan.nextInt();
+		}catch(Exception e){
+			System.err.println("I/O Error");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		this.start1 = start1;
+		this.start2 = start2;
+		this.end1 = end1;
+		this.end2 = end2;
 		
 		init();
 	}

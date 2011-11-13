@@ -64,7 +64,9 @@ public class Server {
 				System.exit(1);
 			}*/
 			
-			//Process an image based on the user input//
+			//Process an image or test based on the user input//
+			int directions[] = RunMaze.Run();
+			
 				
 			//Send back data to the client//
 	        

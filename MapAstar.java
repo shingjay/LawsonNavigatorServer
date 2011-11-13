@@ -8,7 +8,7 @@
 import java.io.*;
 import java.util.*;
 
-public class MapAstarTest{
+public class MapAstar{
 	public static int[][] generateGrid(int choice, int col, int row){
 		//int col = 27;	// There are 27 columns in the map file
 		//int row = 61;	// There is 61 rows in the map file
