@@ -2,7 +2,9 @@
  * 
  */
 package com.purdue.LawsonNavigator;
+
 import java.io.Serializable;
+
 /**
  * @author ong0
  *	class that contains all of the user input, consisting of:
@@ -10,20 +12,19 @@ import java.io.Serializable;
  *		- user's current floor; basement, first, second, third
  *		- user's method of moving; stairs or elevators
  *		- user's final destination; in terms of a room number
+ *	INCOMPLETE
  */
 
-public class UserInput implements Serializable{
+public class UserInput implements Serializable {
 	
 	private Transport transport;
 	private Floor floor;
+	private Display displayOption;
 	private double latitude;
 	private double longitude;
 	private String roomNumber;
 	private String nonAcademicRoom;
 	private String professorName;
-	
-	// to include:
-	// professor name/ room number
 	
 	/**
 	 * @category default constructor
@@ -31,6 +32,7 @@ public class UserInput implements Serializable{
 	public UserInput() {
 		transport = null;
 		floor = null;
+		displayOption = null;
 		latitude = 0; 
 		longitude = 0;
 		roomNumber = null;
@@ -38,9 +40,10 @@ public class UserInput implements Serializable{
 		professorName = null;
 	}
 	
-	public UserInput(Transport transport, Floor floor, double latitude, double longitude, String roomNumber, String nonAcademicRoom, String professorName) {
+	public UserInput(Transport transport, Floor floor, Display displayOption, double latitude, double longitude, String roomNumber, String nonAcademicRoom, String professorName) {
 		this.transport = transport;
 		this.floor = floor;
+		this.displayOption = displayOption;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.roomNumber = roomNumber;
@@ -56,11 +59,15 @@ public class UserInput implements Serializable{
 	
 	public double getLongitude() { return longitude; }
 	
+	//Added by Ryan Start
 	public String getRoomNumber() {return roomNumber;}
 	
 	public String getNonAcademicRoom() {return nonAcademicRoom;}
 	
 	public String getProfessorName() {return professorName;}
+	
+	public Display getDisplayOption() {return displayOption;}
+	//Added by Ryan End
 	
 	
 	public void setTransport(Transport transport) {
@@ -71,6 +78,10 @@ public class UserInput implements Serializable{
 		this.floor = floor;
 	}
 	
+	public void setDisplayOption(Display displayOption) {
+		this.displayOption = displayOption;
+	}
+	
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
@@ -79,6 +90,7 @@ public class UserInput implements Serializable{
 		this.latitude = latitude;
 	}
 	
+	//Added by Ryan Start
 	public void setRoomNumber(String roomNumber) {
 		this.roomNumber = roomNumber;
 	}
@@ -90,4 +102,5 @@ public class UserInput implements Serializable{
 	public void setProfessorName(String professorName) {
 		this.professorName = professorName;
 	}
+	//Added by Ryan End
 }

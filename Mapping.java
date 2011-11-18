@@ -1,3 +1,5 @@
+package com.purdue.LawsonNavigator;
+
 import java.io.*;
 import java.util.*;
 

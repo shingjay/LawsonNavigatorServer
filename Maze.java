@@ -1,3 +1,14 @@
+/*
+Maze.java
+Majority of code found online by Shawn Garrison
+Editted to fit the project by George Brinzea
+
+Creates a grid from text file data
+Finds a path from defined start and finish using A* algorithm
+*/
+
+package com.purdue.LawsonNavigator;
+
 import java.util.*;
 import java.io.*;
 
@@ -61,7 +72,7 @@ public class Maze {
 		this.columns = columns;
 		elements = new Square[rows][columns];
 		
-		try{
+		/*try{
 			System.out.print("Enter a floor (0,1,2,3): ");
 			floor = scan.nextInt();
 		
@@ -74,7 +85,7 @@ public class Maze {
 			System.err.println("I/O Error");
 			e.printStackTrace();
 			System.exit(1);
-		}
+		}*/
 		
 		this.start1 = start1;
 		this.start2 = start2;
@@ -85,7 +96,7 @@ public class Maze {
 	}
 
 	private void init() {
-		floorValues = MapAstarTest.generateGrid(floor, columns, rows);
+		floorValues = MapAstar.generateGrid(floor, columns, rows);
 		path = new char[rows][columns];
 		createSquares();
 		setStartAndGoal();

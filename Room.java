@@ -5,6 +5,9 @@
  * @author ong0
  *
  */
+
+package com.purdue.LawsonNavigator; 
+ 
 public class Room {
 	private int x_position;
 	private int y_position;

@@ -3,7 +3,9 @@
 /* 	Map file reading					*/
 /* 	Last Update : Nov, 1				*/
 
-//Modifed to test and understand A* by George Brinzea
+//Modifed to be implemented with A* by George Brinzea
+
+package com.purdue.LawsonNavigator;
 
 import java.io.*;
 import java.util.*;

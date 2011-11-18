@@ -1,3 +1,13 @@
+/*
+Square.java
+Majority of code found online by Shawn Garrison
+Editted to fit the project by George Brinzea
+
+Used in A* algorithm
+*/
+
+package com.purdue.LawsonNavigator;
+
 import java.util.HashSet;
 import java.util.Set;
 

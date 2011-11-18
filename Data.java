@@ -1,3 +1,13 @@
+/*
+Data.java
+Written by George Brinzea
+
+Used to test sending data to and from a server
+Not a part of the final project build
+*/
+
+package com.purdue.LawsonNavigator;
+
 import java.io.Serializable;
 
 public class Data implements Serializable{

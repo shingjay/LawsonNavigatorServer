@@ -1,3 +1,13 @@
+/*
+RunMaze.java
+Majority of code found online by Shawn Garrison
+Editted to fit the project by George Brinzea
+
+Handles running the alorithm to find a path
+Turns the path into an array of directions to be used to create text or image directions
+*/
+package com.purdue.LawsonNavigator;
+
 import java.util.*;
 
 public class RunMaze {
@@ -42,8 +52,8 @@ public class RunMaze {
 		}
 	}
 	
-	public static int[] Run(int row, int col){
-		Maze maze = new Maze(61, 27);
+	public static int[] Run(int start1, int start2, int end1, int end2){
+		Maze maze = new Maze(61, 27, start1, start2, end1, end2);
 		//maze1.draw();
 		maze.findBestPath();
 		
