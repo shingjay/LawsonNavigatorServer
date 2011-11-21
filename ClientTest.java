@@ -72,7 +72,7 @@ public class ClientTest {
 				out.println(fromUser);
         		break;
         	}else if(fromUser.equals("Image")){
-			UserInput ui = new UserInput(Transport.STAIRS, Floor.FIRST, Display.MAP, ConvertAndDraw.yArraytoGPS(60), ConvertAndDraw.xArraytoGPS(23), "1142", null, null);
+			UserInput ui = new UserInput(Transport.STAIRS, Floor.BASEMENT, Display.MAP, ConvertAndDraw.yArraytoGPS(52), ConvertAndDraw.xArraytoGPS(5), "B160", null, null);
 			
 			try{
 				oos.writeObject(ui);

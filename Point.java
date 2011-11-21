@@ -42,13 +42,13 @@ public class Point implements Serializable{
 		Point temp = new Point(startx,starty);
 		for(int i = 0; i < directions.length -1; i++){
 			if(directions[i] == 0){ // increase y because the user is going up
-					starty++;
+					starty--;
 			}
 			else if(directions[i] == 1){ //increase x because the user is going right
 					startx++;
 			}
 			else if(directions[i] == 2){ // decrease y because the user is going down
-					starty--;
+					starty++;
 			}
 			else if(directions[i] == 3){ // decrease x because the user is going left
 				startx--;

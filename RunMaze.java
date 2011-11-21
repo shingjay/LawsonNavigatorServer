@@ -59,16 +59,32 @@ public class RunMaze {
 		
 		List<Square> bestList = maze.getBestList();
 		
-		int directions[] = new int[bestList.size() - 1];
+		int directions[] = new int[bestList.size()];
 		int j = 0;
+		
+		int dx = bestList.get(bestList.size() - 1).getX() - start1;
+		int dy = bestList.get(bestList.size() - 1).getY() - start2;
+			
+		if(dx < 0){
+			directions[j] = 0;
+		}else if(dx > 0){
+			directions[j] = 2;
+		}else if(dy > 0){
+			directions[j] = 1;
+		}else{
+			directions[j] = 3;
+		}
+			
+		j++;
+		
 		
 		for(int i = bestList.size() - 1; i > 0; i--){
 			//System.out.println("X: " + bestList.get(i).getX() + " Y: " + bestList.get(i).getY());
 			Square current = bestList.get(i);
 			Square next = bestList.get(i-1);
 			
-			int dx = next.getX() - current.getX();
-			int dy = next.getY() - current.getY();
+			dx = next.getX() - current.getX();
+			dy = next.getY() - current.getY();
 			
 			if(dx < 0){
 				directions[j] = 0;
