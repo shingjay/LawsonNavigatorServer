@@ -189,6 +189,15 @@ public class Server {
 				}else{
 					textDirections1 = Directions.directions_to_string(temp);
 					points1 = Point.getTrigger(start2, start1, temp);
+					
+					for(int i = 0; i < textDirections1.size(); i++){
+						System.out.println(textDirections1.get(i));
+					}
+					System.out.println();
+					
+					for(int i = 0; i < points1.size(); i++){
+						System.out.println(points1.get(i).getx() + " " + points1.get(i).gety());
+					}
 				}
 			}
 	

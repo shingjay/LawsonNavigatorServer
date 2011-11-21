@@ -71,7 +71,7 @@ public class ClientTest {
         	if(fromUser.equals("exit")){
 				out.println(fromUser);
         		break;
-        	}else if(fromUser.equals("TestImageTransfer")){
+        	}else if(fromUser.equals("Image")){
 			UserInput ui = new UserInput(Transport.STAIRS, Floor.FIRST, Display.MAP, ConvertAndDraw.yArraytoGPS(60), ConvertAndDraw.xArraytoGPS(23), "1142", null, null);
 			
 			try{
@@ -115,6 +115,50 @@ public class ClientTest {
 			System.exit(0);
 			
 			
+		}else if(fromUser.equals("Text")){
+			UserInput ui = new UserInput(Transport.STAIRS, Floor.FIRST, Display.TEXTSPEECH, ConvertAndDraw.yArraytoGPS(60), ConvertAndDraw.xArraytoGPS(23), "1142", null, null);
+			
+			try{
+				oos.writeObject(ui);
+			}catch(Exception e){
+				System.err.println("Error in sending ui data");
+				e.printStackTrace();
+				System.exit(1);
+			}
+			
+			ArrayList<Byte> images1 = null;
+			ArrayList<String> textDirections1 = null;
+			ArrayList<Point> points1 = null;
+
+			ArrayList<Byte> images2 = null;
+			ArrayList<String> textDirections2 = null;
+			ArrayList<Point> points2 = null;
+			
+			try{
+				images1 = (ArrayList<Byte>) ois.readObject();
+				textDirections1 = (ArrayList<String>) ois.readObject();
+				points1 = (ArrayList<Point>) ois.readObject();
+
+				images2 = (ArrayList<Byte>) ois.readObject();
+				textDirections2 = (ArrayList<String>) ois.readObject();
+				points2 = (ArrayList<Point>) ois.readObject();
+			}catch(Exception e){
+				System.err.println("Error in recieving data from the server");
+				e.printStackTrace();
+				System.exit(1);
+			}
+			
+			for(int i = 0; i < textDirections1.size(); i++){
+				System.out.println(textDirections1.get(i));
+			}
+			System.out.println();
+			
+			for(int i = 0; i < points1.size(); i++){
+				System.out.println(points1.get(i).getx() + " " + points1.get(i).gety());
+			}
+			
+			System.out.println("\nCompleted");
+			System.exit(0);
 		}else{
         	
 			out.println(fromUser);
