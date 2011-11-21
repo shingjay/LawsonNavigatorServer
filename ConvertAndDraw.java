@@ -77,7 +77,7 @@ class ConvertAndDraw {
 		int yA = 69; // This is 69 cuz there was a title on the image and we ignored that part for griding part.
 		Graphics g = null;
 		BufferedImage image = null;
-		String fileName = "lwsn-" + floor + ".jpg";
+		String fileName = "lwsn-" + floor + ".bmp";
 		try {
 			File originalImage = new File(fileName);
 			fis = new FileInputStream(originalImage);
@@ -111,9 +111,14 @@ class ConvertAndDraw {
 			startingY = dirY[directionArray[i]] * y + startingY;
 				g.fillOval( startingX, startingY, 20, 20);
 		}
-		String outFileName = "out-" + floor + ".jpg";
+		String outFileName = "out-" + floor + ".bmp";
 		try {
-			ImageIO.write(bi, "jpg",new File(outFileName)); 
-		} catch(Exception E){		}
+			ImageIO.write(bi, "bmp",new File(outFileName)); 
+		} catch(Exception E){
+			System.err.println("Error writing output file");
+			E.printStackTrace();	
+		}
+		
+		System.out.println("At the end of lineDrawer");
 	}	
 }

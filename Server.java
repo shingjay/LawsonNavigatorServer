@@ -93,6 +93,8 @@ public class Server {
 				endFloor = ((Room) prooms.get(ui.getProfessorName())).getFloor();
 			}
 			
+			System.out.println("Beginning floor: " + beginFloor + " Ending floor: " + endFloor);
+			
 			int start1;
 			int start2;
 			
@@ -104,39 +106,51 @@ public class Server {
 			//byte images[][] = new byte[2];
 			//Point points[][] = new Point[2];
 			
-			ArrayList<Integer> directions1 = null;
-			ArrayList<String> textDirections1 = null;
-			ArrayList<Byte> images1 = null;
-			ArrayList<Point> points1 = null;
+			//ArrayList<Integer> directions1 = null;
+			ArrayList<String> textDirections1 = new ArrayList<String>();
+			ArrayList<Byte> images1 = new ArrayList<Byte>();
+			ArrayList<Point> points1 = new ArrayList<Point>();
 			
-			ArrayList<Integer> directions2 = null;
-			ArrayList<String> textDirections2 = null;
-			ArrayList<Byte> images2 = null;
-			ArrayList<Point> points2 = null;
+			//ArrayList<Integer> directions2 = null;
+			ArrayList<String> textDirections2 = new ArrayList<String>();
+			ArrayList<Byte> images2 = new ArrayList<Byte>();
+			ArrayList<Point> points2 = new ArrayList<Point>();
 			
 			if(beginFloor != endFloor){
 				//nothing right now
 			}else{
-				start1 = ConvertAndDraw.yGPStoArray(ui.getLatitude());
-				start2 = ConvertAndDraw.xGPStoArray(ui.getLongitude());
+				start1 = ConvertAndDraw.yGPStoArray(ui.getLatitude())-1;
+				start2 = ConvertAndDraw.xGPStoArray(ui.getLongitude())-1;
 				
 				if(ui.getRoomNumber() != null){
-					end1 = ((Room) rooms.get(ui.getRoomNumber())).getY();
-					end2 = ((Room) rooms.get(ui.getRoomNumber())).getX();
+					end1 = ((Room) rooms.get(ui.getRoomNumber())).getY()-1;
+					end2 = ((Room) rooms.get(ui.getRoomNumber())).getX()-1;
 				}else if(ui.getNonAcademicRoom() != null){
-					end1 = ((Room) rooms.get(ui.getNonAcademicRoom())).getY();
-					end2 = ((Room) rooms.get(ui.getNonAcademicRoom())).getX();
+					end1 = ((Room) rooms.get(ui.getNonAcademicRoom())).getY()-1;
+					end2 = ((Room) rooms.get(ui.getNonAcademicRoom())).getX()-1;
 				}else{
-					end1 = ((Room) prooms.get(ui.getProfessorName())).getY();
-					end2 = ((Room) prooms.get(ui.getProfessorName())).getX();
+					end1 = ((Room) prooms.get(ui.getProfessorName())).getY()-1;
+					end2 = ((Room) prooms.get(ui.getProfessorName())).getX()-1;
 				}
 				
-				int temp[] = RunMaze.Run(start1, start2, end1, end2);
+				System.out.println("Start1: " + start1 + " Start2: " + start2 + " End1: " + end1 + " End2: " + end2);
+				
+				int temp[] = RunMaze.Run(start1, start2, end1, end2, beginFloor);
+				
+				//System.out.println("Direction array: " + temp);
+				
+				for(int i = 0; i < temp.length; i ++){
+					System.out.print(temp[i] + ", ");
+				}
+				
+				System.out.println();
 				
 				if(ui.getDisplayOption() == Display.MAP){
 					ConvertAndDraw.lineDrawer(start2, start1, temp, beginFloor);
 					
-					String filename = "out-" + endFloor + ".jpg";
+					System.out.println("Done with lineDrawer");
+					
+					String filename = "out-" + endFloor + ".bmp";
 					
 					FileInputStream fis = null;
 					
@@ -144,20 +158,34 @@ public class Server {
 						fis = new FileInputStream(new File(filename));
 					}catch(Exception e){
 						System.err.println("Error opening fis.");
-						System.exit(1);
 					}
 					
+					System.out.println("Opened the file: " + filename);
+					
+					byte tempByte;
+					
 					try{
-						byte tempByte = (byte) fis.read();
+						tempByte = (byte) fis.read();
+						
+						System.out.print(tempByte + ", ");
 					
 						while(tempByte != -1){
-							images1.add(tempByte);
+							images1.add(new Byte(tempByte));
 							tempByte = (byte) fis.read();
 						}
 					}catch(Exception e){
 						System.err.println("Error reading bytes from file.");
 						System.exit(1);
 					}
+					
+					Byte images1Array[] = new Byte[images1.size()];
+			
+					for(int i = 0; i < images1Array.length; i++){
+						images1Array[i] = images1.get(i);
+						System.out.print(images1Array[i] + ", ");
+					}
+					
+					System.out.println();
 				}else{
 					textDirections1 = Directions.directions_to_string(temp);
 					points1 = Point.getTrigger(start2, start1, temp);
@@ -166,14 +194,16 @@ public class Server {
 	
 			try{
 				oos.writeObject(images1);
-	        		oos.writeObject(images2);
-	        		oos.writeObject(textDirections1);
-	        		oos.writeObject(points1);
-	        		oos.writeObject(textDirections2);
-	        		oos.writeObject(points2);
-	        	}catch(Exception e){
-	        		System.err.println("Error sending data to client.");
-				System.exit(1);
+				
+				oos.writeObject(textDirections1);
+				oos.writeObject(points1);
+				
+				oos.writeObject(images2);
+				
+				oos.writeObject(textDirections2);
+				oos.writeObject(points2);
+			}catch(Exception e){
+				System.err.println("Error sending data to client.");
 			}
 			
 			/*try {
@@ -185,7 +215,9 @@ public class Server {
 			}catch (IOException e) {
 				e.printStackTrace();
 				System.exit(1);
-			}*/	
+			}*/
+			
+			System.out.println("Thread has completed.");	
 		}
 	}
 	

@@ -33,50 +33,48 @@ public class MapAstar{
 			scan1 = new Scanner (file1);
 			scan2 = new Scanner (file2);
 			scan3 = new Scanner (file3);
-			// Reading Basement floor
-			i = 0; j = 0;
-			while (scanB.hasNextInt()) {
-				temp = scanB.nextInt();
-				floorB[j][i] = temp;	i++;
-				if (i == col){	j++;	i = 0;	}
-			}
-			// Reading 1st Floor
-			i = 0; j = 0;
-			while (scan1.hasNextInt()) {
-				temp = scan1.nextInt();
-				floor1[j][i] = temp;	i++;
-				if (i == col){	j++;	i = 0;	}
-			}
-			// Reading 2nd Floor
-			i = 0; j = 0;
-			while (scan2.hasNextInt()) {
-				temp = scan2.nextInt();
-				floor2[j][i] = temp;	i++;
-				if (i == col){	j++;	i = 0;	}
-			}
-			// Reading 3rd Floor
-			i = 0; j = 0;
-			while (scan3.hasNextInt()) {
-				temp = scan3.nextInt();
-				floor3[j][i] = temp;	i++;
-				if (i == col){	j++;	i = 0;	}
+			if(choice == 0){
+				// Reading Basement floor
+				i = 0; j = 0;
+				while (scanB.hasNextInt()) {
+					temp = scanB.nextInt();
+					floorB[j][i] = temp;	i++;
+					if (i == col){	j++;	i = 0;	}
+				}
+				return floorB;
+			}else if(choice == 1){
+				// Reading 1st Floor
+				i = 0; j = 0;
+				while (scan1.hasNextInt()) {
+					temp = scan1.nextInt();
+					floor1[j][i] = temp;	i++;
+					if (i == col){	j++;	i = 0;	}
+				}
+				return floor1;
+			}else if(choice == 2){
+				// Reading 2nd Floor
+				i = 0; j = 0;
+				while (scan2.hasNextInt()) {
+					temp = scan2.nextInt();
+					floor2[j][i] = temp;	i++;
+					if (i == col){	j++;	i = 0;	}
+				}
+				return floor2;
+			}else if(choice == 3){
+				// Reading 3rd Floor
+				i = 0; j = 0;
+				while (scan3.hasNextInt()) {
+					temp = scan3.nextInt();
+					floor3[j][i] = temp;	i++;
+					if (i == col){	j++;	i = 0;	}
+				}
+				return floor3;
 			}
 		} catch (Exception e){
 			System.err.println("I/O Error.");
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
-		if(choice == 0){
-			return floorB;
-		}else if(choice == 1){
-			return floor1;
-		}else if(choice == 2){
-			return floor2;
-		}else if(choice == 3){
-			return floor3;
-		}
-		
 		return null;
 	}
 }

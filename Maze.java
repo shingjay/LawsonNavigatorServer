@@ -66,7 +66,7 @@ public class Maze {
 		init();
 	}
 	
-	public Maze(int rows, int columns, int start1, int start2, int end1, int end2) {
+	public Maze(int rows, int columns, int start1, int start2, int end1, int end2, int floor) {
 		scan = new Scanner(System.in);
 		this.rows = rows;
 		this.columns = columns;
@@ -91,11 +91,15 @@ public class Maze {
 		this.start2 = start2;
 		this.end1 = end1;
 		this.end2 = end2;
+		this.floor = floor;
+		
+		System.out.println("In Maze constructor, Start1: " + start1 + " Start2: " + start2 + " End1: " + end1 + " End2: " + end2);
 		
 		init();
 	}
 
 	private void init() {
+		System.out.println("In Maze.init, columns: " + columns + " rows: " + rows);
 		floorValues = MapAstar.generateGrid(floor, columns, rows);
 		path = new char[rows][columns];
 		createSquares();

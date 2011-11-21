@@ -52,9 +52,9 @@ public class RunMaze {
 		}
 	}
 	
-	public static int[] Run(int start1, int start2, int end1, int end2){
-		Maze maze = new Maze(61, 27, start1, start2, end1, end2);
-		//maze1.draw();
+	public static int[] Run(int start1, int start2, int end1, int end2, int floor){
+		Maze maze = new Maze(61, 27, start1, start2, end1, end2, floor);
+		maze.draw();
 		maze.findBestPath();
 		
 		List<Square> bestList = maze.getBestList();
@@ -83,9 +83,9 @@ public class RunMaze {
 			j++;
 		}
 		
-		for(int i = 0; i < directions.length; i++){
+		/*for(int i = 0; i < directions.length; i++){
 			System.out.println(directions[i]);
-		}
+		}*/
 		
 		return directions;
 	}
