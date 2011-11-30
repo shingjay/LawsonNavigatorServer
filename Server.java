@@ -34,11 +34,13 @@ public class Server {
 			ObjectOutputStream oos = null;
 			ObjectInputStream ois = null;
 			BufferedReader in = null;
+			OutputStream os = null;
 			try {
 				out = new PrintWriter(threadedSocket.getOutputStream(), true);
 				in = new BufferedReader(new InputStreamReader(threadedSocket.getInputStream()));
 				oos = new ObjectOutputStream(threadedSocket.getOutputStream());
 				ois = new ObjectInputStream(threadedSocket.getInputStream());
+				os = threadedSocket.getOutputStream();
 			} catch (IOException e) {
 				System.err.println("I/O stream creation error.");
 				e.printStackTrace();
@@ -57,7 +59,7 @@ public class Server {
 				System.exit(1);
 			}
 	        	
-	        	System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude() + "\nroomNumber: " + ui.getRoomNumber() + "\nnonAcademicRoom: " + ui.getNonAcademicRoom() + "\nprofessorName: " + ui.getProfessorName() + "\n");
+	        	System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude() + "\nDisplay Option: " + ui.getDisplayOption() + "\nroomNumber: " + ui.getRoomNumber() + "\nnonAcademicRoom: " + ui.getNonAcademicRoom() + "\nprofessorName: " + ui.getProfessorName() + "\n");
 	        	/*ui.setTransport(Transport.ELEVATOR);
 	        	ui.setFloor(Floor.SECOND);
 	        	ui.setLatitude(100);
@@ -101,19 +103,27 @@ public class Server {
 			int end1;
 			int end2;
 			
-			//int directions[][] = new int [2];
-			//String[][] textDirections = new String[2];
-			//byte images[][] = new byte[2];
-			//Point points[][] = new Point[2];
-			
-			//ArrayList<Integer> directions1 = null;
 			ArrayList<String> textDirections1 = new ArrayList<String>();
 			ArrayList<Byte> images1 = new ArrayList<Byte>();
+			
+			ArrayList<Byte> images11 = new ArrayList<Byte>();
+			ArrayList<Byte> images12 = new ArrayList<Byte>();
+			ArrayList<Byte> images13 = new ArrayList<Byte>();
+			ArrayList<Byte> images14 = new ArrayList<Byte>();
+			ArrayList<Byte> images15 = new ArrayList<Byte>();
+			
 			ArrayList<Point> points1 = new ArrayList<Point>();
 			
-			//ArrayList<Integer> directions2 = null;
 			ArrayList<String> textDirections2 = new ArrayList<String>();
 			ArrayList<Byte> images2 = new ArrayList<Byte>();
+			
+			
+			ArrayList<Byte> images21 = new ArrayList<Byte>();
+			ArrayList<Byte> images22 = new ArrayList<Byte>();
+			ArrayList<Byte> images23 = new ArrayList<Byte>();
+			ArrayList<Byte> images24 = new ArrayList<Byte>();
+			ArrayList<Byte> images25 = new ArrayList<Byte>();
+			
 			ArrayList<Point> points2 = new ArrayList<Point>();
 			
 			if(beginFloor != endFloor){
@@ -185,7 +195,36 @@ public class Server {
 						System.out.print(images1Array[i] + ", ");
 					}
 					
-					System.out.println();
+					/*System.out.println();
+					int j = 0;
+					
+					for(int i = 0; i < images1.size(); i++){
+						if(i < 1*(images1.size()/5)){
+							images11.add(images1.get(j));
+							j++;
+						}else if(i < 2*(images1.size()/5)){
+							images12.add(images1.get(j));
+							j++;
+						}else if(i < 3*(images1.size()/5)){
+							images13.add(images1.get(j));
+							j++;
+						}else if(i < 4*(images1.size()/5)){
+							images14.add(images1.get(j));
+							j++;
+						}else{
+							images15.add(images1.get(j));
+							j++;
+						}
+						
+						if(i == 1*(images1.size()/5) || i == 2*(images1.size()/5) || i == 3*(images1.size()/5) || i == 4*(images1.size()/5)){
+							j = 0;
+						}
+						
+						
+					}
+					
+					System.out.println("images1 size: " + images1.size());
+					System.out.println("images11 size: " + images11.size() + "images12 size: " + images12.size() + "images13 size: " + images13.size() + "images14 size: " + images14.size() + "images15 size: " + images15.size());*/
 				}else{
 					textDirections1 = Directions.directions_to_string(temp);
 					points1 = Point.getTrigger(start2, start1, temp);
@@ -202,12 +241,39 @@ public class Server {
 			}
 	
 			try{
-				oos.writeObject(images1);
+				//oos.writeObject(images1);
+				//oos.writeObject(images11);
+				//oos.writeObject(images12);
+				//oos.writeObject(images13);
+				//oos.writeObject(images14);
+				//oos.writeObject(images15);
+				
+				for(int i = 0; i < images1.size(); i++){
+					os.write(images1.get(i).byteValue());
+					os.flush();
+				}
+				
+				os.write(-1);
+				os.flush();
+				
 				
 				oos.writeObject(textDirections1);
 				oos.writeObject(points1);
 				
-				oos.writeObject(images2);
+				//oos.writeObject(images2);
+				//oos.writeObject(images21);
+				//oos.writeObject(images22);
+				//oos.writeObject(images23);
+				//oos.writeObject(images24);
+				//oos.writeObject(images25);
+				
+				for(int i = 0; i < images2.size(); i++){
+					os.write(images2.get(i).byteValue());
+					os.flush();
+				}
+				
+				os.write(-1);
+				os.flush();
 				
 				oos.writeObject(textDirections2);
 				oos.writeObject(points2);

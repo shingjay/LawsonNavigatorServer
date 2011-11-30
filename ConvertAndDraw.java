@@ -107,9 +107,10 @@ class ConvertAndDraw {
 				g.setColor( Color.RED );
 			}
 		
+			
+			g.fillOval( startingX, startingY, 20, 20);
 			startingX = dirX[directionArray[i]] * x + startingX;
 			startingY = dirY[directionArray[i]] * y + startingY;
-				g.fillOval( startingX, startingY, 20, 20);
 		}
 		String outFileName = "out-" + floor + ".bmp";
 		try {
