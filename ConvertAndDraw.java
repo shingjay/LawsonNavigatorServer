@@ -108,7 +108,7 @@ class ConvertAndDraw {
 			}
 		
 			
-			g.fillOval( startingX, startingY, 20, 20);
+			g.fillOval( startingX, startingY, 5, 5);
 			startingX = dirX[directionArray[i]] * x + startingX;
 			startingY = dirY[directionArray[i]] * y + startingY;
 		}

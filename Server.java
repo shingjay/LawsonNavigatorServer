@@ -11,6 +11,7 @@ package com.purdue.LawsonNavigator;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import javax.imageio.stream.FileImageInputStream;
 //import javax.imageio.ImageIO;
 //import java.awt.Image;
 //import java.awt.image.BufferedImage;
@@ -50,26 +51,16 @@ public class Server {
 	        	UserInput ui = null;
 	        	
 	        	//Takes in the UserInput class from the client
-	        	try{
-	        		ui = (UserInput) ois.readObject();
-	        		System.out.println("Recieved object.");
-	        	}catch(Exception e){
-	        		System.err.println("Object input error.");
-	        		e.printStackTrace();
+	        try{
+	        	ui = (UserInput) ois.readObject();
+	        	System.out.println("Recieved object.");
+	        }catch(Exception e){
+	        	System.err.println("Object input error.");
+	        	e.printStackTrace();
 				System.exit(1);
 			}
 	        	
-	        	System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude() + "\nDisplay Option: " + ui.getDisplayOption() + "\nroomNumber: " + ui.getRoomNumber() + "\nnonAcademicRoom: " + ui.getNonAcademicRoom() + "\nprofessorName: " + ui.getProfessorName() + "\n");
-	        	/*ui.setTransport(Transport.ELEVATOR);
-	        	ui.setFloor(Floor.SECOND);
-	        	ui.setLatitude(100);
-	        	ui.setLongitude(200);
-	        	
-	        	try{
-	        		oos.writeObject(ui);
-	        	}catch(Exception e){
-				System.exit(1);
-			}*/
+	        System.out.println("Transport: " + ui.getTransport() + "\nFloor: " + ui.getFloor() + "\nLatitude: " + ui.getLatitude() + "\nLongitude: " + ui.getLongitude() + "\nDisplay Option: " + ui.getDisplayOption() + "\nroomNumber: " + ui.getRoomNumber() + "\nnonAcademicRoom: " + ui.getNonAcademicRoom() + "\nprofessorName: " + ui.getProfessorName() + "\n");
 			
 			//Process an image or test based on the user input//
 
@@ -105,30 +96,196 @@ public class Server {
 			
 			ArrayList<String> textDirections1 = new ArrayList<String>();
 			ArrayList<Byte> images1 = new ArrayList<Byte>();
-			
-			ArrayList<Byte> images11 = new ArrayList<Byte>();
-			ArrayList<Byte> images12 = new ArrayList<Byte>();
-			ArrayList<Byte> images13 = new ArrayList<Byte>();
-			ArrayList<Byte> images14 = new ArrayList<Byte>();
-			ArrayList<Byte> images15 = new ArrayList<Byte>();
-			
 			ArrayList<Point> points1 = new ArrayList<Point>();
 			
 			ArrayList<String> textDirections2 = new ArrayList<String>();
 			ArrayList<Byte> images2 = new ArrayList<Byte>();
-			
-			
-			ArrayList<Byte> images21 = new ArrayList<Byte>();
-			ArrayList<Byte> images22 = new ArrayList<Byte>();
-			ArrayList<Byte> images23 = new ArrayList<Byte>();
-			ArrayList<Byte> images24 = new ArrayList<Byte>();
-			ArrayList<Byte> images25 = new ArrayList<Byte>();
-			
 			ArrayList<Point> points2 = new ArrayList<Point>();
 			
 			if(beginFloor != endFloor){
-				//nothing right now
-			}else{
+				int[] northStairs = {3,19}; //0
+				int[] southStairs = {49,4}; //1
+				int[] elevator = {29,11}; //2
+				int choice = -1;
+				
+				////////////////First Floor/////////////////
+				start1 = ConvertAndDraw.yGPStoArray(ui.getLatitude())-1;
+				start2 = ConvertAndDraw.xGPStoArray(ui.getLongitude())-1;
+				
+				if(ui.getTransport() == Transport.ELEVATOR){
+					end1 = elevator[0]; end2 = elevator[1];
+					choice = 2;
+				}else{
+					if(ui.getRoomNumber() != null){
+						end1 = ((Room) rooms.get(ui.getRoomNumber())).getY()-1;
+						//end2 = ((Room) rooms.get(ui.getRoomNumber())).getX()-1;
+					}else if(ui.getNonAcademicRoom() != null){
+						end1 = ((Room) rooms.get(ui.getNonAcademicRoom())).getY()-1;
+						//end2 = ((Room) rooms.get(ui.getNonAcademicRoom())).getX()-1;
+					}else{
+						end1 = ((Room) prooms.get(ui.getProfessorName())).getY()-1;
+						//end2 = ((Room) prooms.get(ui.getProfessorName())).getX()-1;
+					}
+					
+					if(end1 < 31){
+						end1 = southStairs[0]; end2 = southStairs[1];
+						choice = 1;
+					}else{
+						end1 = northStairs[0]; end2 = northStairs[1];
+						choice = 2;
+					}
+				}
+				
+				System.out.println("\nMultiple images, First Floor\nStart1: " + start1 + " Start2: " + start2 + " End1: " + end1 + " End2: " + end2);
+				
+				int temp[] = RunMaze.Run(start1, start2, end1, end2, beginFloor);
+				
+				for(int i = 0; i < temp.length; i ++){
+					System.out.print(temp[i] + ", ");
+				}
+				
+				System.out.println();
+				
+				if(ui.getDisplayOption() == Display.MAP){
+					ConvertAndDraw.lineDrawer(start2, start1, temp, beginFloor);
+					
+					System.out.println("Done with lineDrawer");
+					
+					String filename = "out-" + beginFloor + ".bmp";
+					
+					FileImageInputStream fis = null;
+					
+					try{
+						fis = new FileImageInputStream(new File(filename));
+					}catch(Exception e){
+						System.err.println("Error opening fis.");
+					}
+					
+					System.out.println("Opened the file: " + filename);
+					
+					byte tempByte;
+					int tempInt;
+					long tempLength;
+					
+					try{
+						tempInt = fis.read();
+						
+						//System.out.print(tempInt + ", ");
+					
+						while(tempInt != -1){
+							images1.add(new Byte((byte)tempInt));
+							tempInt = fis.read();
+							//System.out.print(tempInt + ", ");
+						}
+						
+						System.out.println("\nimages1.size: " + images1.size());
+						
+					}catch(Exception e){
+						System.err.println("Error reading bytes from file.");
+						System.exit(1);
+					}
+					
+				}else{
+					textDirections1 = Directions.directions_to_string(temp);
+					points1 = Point.getTrigger(start2, start1, temp);
+					
+					for(int i = 0; i < textDirections1.size(); i++){
+						System.out.println(textDirections1.get(i));
+					}
+					System.out.println();
+					
+					for(int i = 0; i < points1.size(); i++){
+						System.out.println(points1.get(i).getx() + " " + points1.get(i).gety());
+					}
+				}
+				
+				////////////////Second Floor/////////////////
+				
+				if(choice == 0){
+					start1 = northStairs[0]; start2 = northStairs[1];
+				}else if(choice == 1){
+					start1 = southStairs[0]; start2 = southStairs[1];
+				}else if(choice == 2){
+					start1 = elevator[0]; start2 = elevator[1];
+				}else{
+					System.out.println("Something wrong in stair/elevator choice");
+					System.exit(1);
+				}
+				
+				if(ui.getRoomNumber() != null){
+					end1 = ((Room) rooms.get(ui.getRoomNumber())).getY()-1;
+					end2 = ((Room) rooms.get(ui.getRoomNumber())).getX()-1;
+				}else if(ui.getNonAcademicRoom() != null){
+					end1 = ((Room) rooms.get(ui.getNonAcademicRoom())).getY()-1;
+					end2 = ((Room) rooms.get(ui.getNonAcademicRoom())).getX()-1;
+				}else{
+					end1 = ((Room) prooms.get(ui.getProfessorName())).getY()-1;
+					end2 = ((Room) prooms.get(ui.getProfessorName())).getX()-1;
+				}
+					
+				System.out.println("\nMultiple images, Second Floor\nStart1: " + start1 + " Start2: " + start2 + " End1: " + end1 + " End2: " + end2);
+				
+				int temp2[] = RunMaze.Run(start1, start2, end1, end2, endFloor);
+				
+				for(int i = 0; i < temp2.length; i ++){
+					System.out.print(temp2[i] + ", ");
+				}
+				
+				System.out.println();
+				
+				if(ui.getDisplayOption() == Display.MAP){
+					ConvertAndDraw.lineDrawer(start2, start1, temp2, endFloor);
+					
+					System.out.println("Done with lineDrawer");
+					
+					String filename = "out-" + endFloor + ".bmp";
+					
+					FileImageInputStream fis = null;
+					
+					try{
+						fis = new FileImageInputStream(new File(filename));
+					}catch(Exception e){
+						System.err.println("Error opening fis.");
+					}
+					
+					System.out.println("Opened the file: " + filename);
+					
+					byte tempByte;
+					int tempInt;
+					long tempLength;
+					
+					try{
+						tempInt = fis.read();
+						
+						//System.out.print(tempInt + ", ");
+					
+						while(tempInt != -1){
+							images2.add(new Byte((byte)tempInt));
+							tempInt = fis.read();
+							//System.out.print(tempInt + ", ");
+						}
+						
+						System.out.println("\nimages2.size: " + images2.size());
+						
+					}catch(Exception e){
+						System.err.println("Error reading bytes from file.");
+						System.exit(1);
+					}
+					
+				}else{
+					textDirections2 = Directions.directions_to_string(temp2);
+					points2 = Point.getTrigger(start2, start1, temp2);
+					
+					for(int i = 0; i < textDirections1.size(); i++){
+						System.out.println(textDirections2.get(i));
+					}
+					System.out.println();
+					
+					for(int i = 0; i < points2.size(); i++){
+						System.out.println(points2.get(i).getx() + " " + points2.get(i).gety());
+					}
+				}
+			}else{//////////Only a single floor/////////////
 				start1 = ConvertAndDraw.yGPStoArray(ui.getLatitude())-1;
 				start2 = ConvertAndDraw.xGPStoArray(ui.getLongitude())-1;
 				
@@ -162,10 +319,10 @@ public class Server {
 					
 					String filename = "out-" + endFloor + ".bmp";
 					
-					FileInputStream fis = null;
+					FileImageInputStream fis = null;
 					
 					try{
-						fis = new FileInputStream(new File(filename));
+						fis = new FileImageInputStream(new File(filename));
 					}catch(Exception e){
 						System.err.println("Error opening fis.");
 					}
@@ -173,55 +330,45 @@ public class Server {
 					System.out.println("Opened the file: " + filename);
 					
 					byte tempByte;
+					int tempInt;
+					long tempLength;
 					
 					try{
-						tempByte = (byte) fis.read();
+						tempInt = fis.read();
 						
-						System.out.print(tempByte + ", ");
+						//System.out.print(tempInt + ", ");
 					
-						while(tempByte != -1){
-							images1.add(new Byte(tempByte));
-							tempByte = (byte) fis.read();
+						while(tempInt != -1){
+							images1.add(new Byte((byte)tempInt));
+							tempInt = fis.read();
+							//System.out.print(tempInt + ", ");
 						}
+						
+						/*tempLength = fis.length();
+						
+						for(int i = 0; i < tempLength; i++){
+							tempInt = fis.read();
+							//System.out.print(Integer.valueOf(tempInt).byteValue() + ", ");
+							images1.add(new Byte(Integer.valueOf(tempInt).byteValue()));
+						}*/
+						
+						//System.out.println("\ntempLength: " + tempLength);
+						System.out.println("\nimages1.size: " + images1.size());
+						
 					}catch(Exception e){
 						System.err.println("Error reading bytes from file.");
 						System.exit(1);
 					}
 					
-					Byte images1Array[] = new Byte[images1.size()];
+					/*Byte images1Array[] = new Byte[images1.size()];
 			
 					for(int i = 0; i < images1Array.length; i++){
 						images1Array[i] = images1.get(i);
 						System.out.print(images1Array[i] + ", ");
-					}
+					}*/
 					
 					/*System.out.println();
 					int j = 0;
-					
-					for(int i = 0; i < images1.size(); i++){
-						if(i < 1*(images1.size()/5)){
-							images11.add(images1.get(j));
-							j++;
-						}else if(i < 2*(images1.size()/5)){
-							images12.add(images1.get(j));
-							j++;
-						}else if(i < 3*(images1.size()/5)){
-							images13.add(images1.get(j));
-							j++;
-						}else if(i < 4*(images1.size()/5)){
-							images14.add(images1.get(j));
-							j++;
-						}else{
-							images15.add(images1.get(j));
-							j++;
-						}
-						
-						if(i == 1*(images1.size()/5) || i == 2*(images1.size()/5) || i == 3*(images1.size()/5) || i == 4*(images1.size()/5)){
-							j = 0;
-						}
-						
-						
-					}
 					
 					System.out.println("images1 size: " + images1.size());
 					System.out.println("images11 size: " + images11.size() + "images12 size: " + images12.size() + "images13 size: " + images13.size() + "images14 size: " + images14.size() + "images15 size: " + images15.size());*/
@@ -240,41 +387,12 @@ public class Server {
 				}
 			}
 	
-			try{
-				//oos.writeObject(images1);
-				//oos.writeObject(images11);
-				//oos.writeObject(images12);
-				//oos.writeObject(images13);
-				//oos.writeObject(images14);
-				//oos.writeObject(images15);
-				
-				for(int i = 0; i < images1.size(); i++){
-					os.write(images1.get(i).byteValue());
-					os.flush();
-				}
-				
-				os.write(-1);
-				os.flush();
-				
-				
+			try{	
+				oos.writeObject(images1);
 				oos.writeObject(textDirections1);
 				oos.writeObject(points1);
 				
-				//oos.writeObject(images2);
-				//oos.writeObject(images21);
-				//oos.writeObject(images22);
-				//oos.writeObject(images23);
-				//oos.writeObject(images24);
-				//oos.writeObject(images25);
-				
-				for(int i = 0; i < images2.size(); i++){
-					os.write(images2.get(i).byteValue());
-					os.flush();
-				}
-				
-				os.write(-1);
-				os.flush();
-				
+				oos.writeObject(images2);
 				oos.writeObject(textDirections2);
 				oos.writeObject(points2);
 			}catch(Exception e){
