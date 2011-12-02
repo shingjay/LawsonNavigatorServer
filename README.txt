@@ -11,4 +11,7 @@ Team Members:
 @Description:
 This folder contains server-side classes. 
 Only .java files within the main folder are being used for actual project builds.
+
+Running "make.sh compile" will compile the server.
 The compiled .class files are found within ./com/purdue/LawsonNavigator
+Run "java ./com/purdue/LawsonNavigator/Server" to start the server.
