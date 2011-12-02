@@ -20,7 +20,7 @@ import javax.imageio.stream.FileImageInputStream;
 
 public class Server {
 	
-	static int PORT = 4444;
+	static int PORT = 9999;
 	
 	static Socket clientSocket = null;
 	
